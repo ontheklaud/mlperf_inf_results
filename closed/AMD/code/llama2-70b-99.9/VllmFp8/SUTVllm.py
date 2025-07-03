@@ -121,7 +121,7 @@ class SUTVllmFp8Offline_ntp1(SUT):
             model_max_length=model_max_length,
         )
         self.tp = tp
-        self.quantization = "fp8"
+        self.quantization = quantization
         self.quantization_param_path = quantization_param_path
         self.quantized_weights_path = quantized_weights_path
         self.kv_cache_dtype = kv_cache_dtype

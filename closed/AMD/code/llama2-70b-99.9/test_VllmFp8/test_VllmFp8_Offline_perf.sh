@@ -44,7 +44,8 @@ mkdir -p $LOG_DIR
 env | sort >> ${LOG_DIR}/ct-env.txt
 cp $USER_CONF ${LOG_DIR}/user.conf
 
-export GPU_MAX_RATIO=0.90
+MLPERF_QUANTIZATION_METHOD="${MLPERF_QUANTIZATION_METHOD:-fp8}"
+MLPERF_GPU_MEM_UTIL_RATIO="${MLPERF_GPU_MEM_UTIL_RATIO:-0.99}"
 
 python3 /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.py \
     --scenario Offline \
@@ -60,11 +61,11 @@ python3 /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.p
     --kv-cache-dtype fp8 \
     -tp ${TP} \
     -dp ${DP} \
-    --quantization fp8 \
+    --quantization ${MLPERF_QUANTIZATION_METHOD} \
     --quantized-weights-path ${QUANTIZED_WEIGHTS_PATH} \
     --quantization-param-path ${QUANTIZATION_PARAM_PATH} \
     --warmup-duration ${WD} \
     --sorting ${SORTING} \
     --enforce-eager True \
-    --gpu-memory-utilization ${GPU_MAX_RATIO} \
+    --gpu-memory-utilization ${MLPERF_GPU_MEM_UTIL_RATIO} \
     2>&1 | tee ${LOG_DIR}/perf.offline.DP${DP}TP${TP}.${N_SAMPLES}.log
