@@ -60,7 +60,7 @@ python3 /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.p
     --kv-cache-dtype fp8 \
     -tp ${TP} \
     -dp ${DP} \
-    --quantization quark \
+    --quantization fp8 \
     --quantized-weights-path ${QUANTIZED_WEIGHTS_PATH} \
     --quantization-param-path ${QUANTIZATION_PARAM_PATH} \
     --warmup-duration ${WD} \
