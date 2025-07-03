@@ -68,10 +68,10 @@ class LlmProcTP1():
         llm_kwargs["disable_log_stats"] = True if os.getenv("HARNESS_DISABLE_VLLM_LOGS", "0") == "1" else False
         llm_kwargs["skip_tokenizer_init"] = True
 
-        if self.quantization_param_path:
-            llm_kwargs["quantization_param_path"] = self.quantization_param_path
-        if self.quantized_weights_path:
-            llm_kwargs["quantized_weights_path"] = self.quantized_weights_path
+        #if self.quantization_param_path:
+        #    llm_kwargs["quantization_param_path"] = self.quantization_param_path
+        #if self.quantized_weights_path:
+        #    llm_kwargs["quantized_weights_path"] = self.quantized_weights_path
 
         sp_config = SamplingParamsInput()
         sp_kwargs = dataclasses.asdict( sp_config )
@@ -121,7 +121,7 @@ class SUTVllmFp8Offline_ntp1(SUT):
             model_max_length=model_max_length,
         )
         self.tp = tp
-        self.quantization = "fp8"
+        self.quantization = "quark"
         self.quantization_param_path = quantization_param_path
         self.quantized_weights_path = quantized_weights_path
         self.kv_cache_dtype = kv_cache_dtype

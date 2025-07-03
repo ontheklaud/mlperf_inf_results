@@ -44,6 +44,8 @@ mkdir -p $LOG_DIR
 env | sort >> ${LOG_DIR}/ct-env.txt
 cp $USER_CONF ${LOG_DIR}/user.conf
 
+export GPU_MAX_RATIO=0.90
+
 python3 /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.py \
     --scenario Offline \
     --output-log-dir ${LOG_DIR} \
@@ -58,11 +60,11 @@ python3 /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.p
     --kv-cache-dtype fp8 \
     -tp ${TP} \
     -dp ${DP} \
-    --quantization fp8 \
+    --quantization quark \
     --quantized-weights-path ${QUANTIZED_WEIGHTS_PATH} \
     --quantization-param-path ${QUANTIZATION_PARAM_PATH} \
     --warmup-duration ${WD} \
     --sorting ${SORTING} \
     --enforce-eager True \
-    --gpu-memory-utilization 0.99 \
+    --gpu-memory-utilization ${GPU_MAX_RATIO} \
     2>&1 | tee ${LOG_DIR}/perf.offline.DP${DP}TP${TP}.${N_SAMPLES}.log
