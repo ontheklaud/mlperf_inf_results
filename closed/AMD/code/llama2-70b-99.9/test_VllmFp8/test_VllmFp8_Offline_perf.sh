@@ -45,9 +45,10 @@ env | sort >> ${LOG_DIR}/ct-env.txt
 cp $USER_CONF ${LOG_DIR}/user.conf
 
 MLPERF_QUANTIZATION_METHOD="${MLPERF_QUANTIZATION_METHOD:-fp8}"
-MLPERF_GPU_MEM_UTIL_RATIO="${MLPERF_GPU_MEM_UTIL_RATIO:-0.99}"
+MLPERF_GPU_MEM_UTIL_RATIO="${MLPERF_GPU_MEM_UTIL_RATIO:-0.90}"
+MLPERF_PYTHON_BINARY="${MLPERF_PYTHON_BINARY:-/usr/bin/python3}"
 
-python3 /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.py \
+${MLPERF_PYTHON_BINARY} /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.py \
     --scenario Offline \
     --output-log-dir ${LOG_DIR} \
     --model-path $MODEL_PATH \

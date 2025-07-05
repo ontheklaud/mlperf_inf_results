@@ -45,12 +45,13 @@ env | sort >> ${LOG_DIR}/ct-env.txt
 cp $USER_CONF ${LOG_DIR}/user.conf
 
 MLPERF_QUANTIZATION_METHOD="${MLPERF_QUANTIZATION_METHOD:-fp8}"
-MLPERF_GPU_MEM_UTIL_RATIO="${MLPERF_GPU_MEM_UTIL_RATIO:-0.99}"
+MLPERF_GPU_MEM_UTIL_RATIO="${MLPERF_GPU_MEM_UTIL_RATIO:-0.90}"
+MLPERF_PYTHON_BINARY="${MLPERF_PYTHON_BINARY:-/usr/bin/python3}"
 
 cp /app/mlperf_inference/compliance/nvidia/TEST06/audit.config $AUDIT_CONF
 
 cd /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8
-python3 /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.py \
+${MLPERF_PYTHON_BINARY} /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.py \
     --scenario Offline \
     --output-log-dir ${LOG_DIR} \
     --model-path $MODEL_PATH \
@@ -73,9 +74,7 @@ python3 /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainVllmFp8_Offline.p
     --gpu-memory-utilization ${MLPERF_GPU_MEM_UTIL_RATIO} \
     2>&1 | tee ${LOG_DIR}/audit.offline.DP${DP}TP${TP}.${N_SAMPLES}.log
 
-
-python /app/mlperf_inference/compliance/nvidia/TEST06/run_verification.py -s Offline -c ${LOG_DIR} -o ${LOG_DIR}/compliance -d int32
-
+${MLPERF_PYTHON_BINARY} /app/mlperf_inference/compliance/nvidia/TEST06/run_verification.py -s Offline -c ${LOG_DIR} -o ${LOG_DIR}/compliance -d int32
 
 # Clean
 rm $AUDIT_CONF
