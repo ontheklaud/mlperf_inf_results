@@ -47,6 +47,7 @@ cp $USER_CONF ${LOG_DIR}/user.conf
 MLPERF_QUANTIZATION_METHOD="${MLPERF_QUANTIZATION_METHOD:-fp8}"
 MLPERF_GPU_MEM_UTIL_RATIO="${MLPERF_GPU_MEM_UTIL_RATIO:-0.90}"
 MLPERF_PYTHON_BINARY="${MLPERF_PYTHON_BINARY:-/usr/bin/python3}"
+MLPERF_KV_CACHE_DTYPE="${MLPERF_KV_CACHE_DTYPE:-fp8}"
 
 cp /app/mlperf_inference/compliance/nvidia/TEST06/audit.config $AUDIT_CONF
 
@@ -62,7 +63,7 @@ ${MLPERF_PYTHON_BINARY} /lab-mlperf-inference/code/llama2-70b-99.9/VllmFp8/mainV
     --dtype float16 \
     --backend vllm \
     --device cuda:0 \
-    --kv-cache-dtype fp8 \
+    --kv-cache-dtype ${MLPERF_KV_CACHE_DTYPE} \
     -tp ${TP} \
     -dp ${DP} \
     --quantization ${MLPERF_QUANTIZATION_METHOD} \

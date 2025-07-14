@@ -67,6 +67,9 @@ class LlmProcTP1():
         llm_kwargs["quantization"] = self.quantization
         llm_kwargs["disable_log_stats"] = True if os.getenv("HARNESS_DISABLE_VLLM_LOGS", "0") == "1" else False
         llm_kwargs["skip_tokenizer_init"] = True
+        if os.environ.get("MLPERF_DISABLE_EXTRACFGS", "").lower() in ("1", "true", "yes"):
+            llm_kwargs["compilation_config"] = {"full_cuda_graph": False}
+            llm_kwargs["additional_config"] = {}
 
         #if self.quantization_param_path:
         #    llm_kwargs["quantization_param_path"] = self.quantization_param_path
